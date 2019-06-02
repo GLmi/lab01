@@ -11,29 +11,31 @@
 ## Tutorial
 
 ```bash
-#Присваиваем переменной свое имя пользователя
-$ export GITHUB_USERNAME=<имя_пользователя>
-#Присваиваем переменной свой токен
-$ export GIST_TOKEN=<сохраненный_токен>
-#Биндим команду edit с вызовом редактора vim
+#Присваиваем переменной имя пользователя
+$ export GITHUB_USERNAME=GLmi
+#Присваиваем переменной токен
+$ export GIST_TOKEN=<...>
+#Присваиваем вызов vim при использовании команды edit
 $ alias edit=<vim>
 ```
 
 ```ShellSession
-# Создаем дирректорию с нашим именем пользователя и со вложенной папкой workspace
+# Создаем дирректорию с GITHUB_USERNAME с дочерним каталогом workspace
 $ mkdir -p ${GITHUB_USERNAME}/workspace
 # Переходим в созданный каталог
 $ cd ${GITHUB_USERNAME}/workspace
-# Выводим полный путь до текущей дирректории
+# Выводим адрес текущей дирректории
 $ pwd
-# Возвращаемся наверх(в предыдущую папку)
+/home/vb/GLmi
+# Подниманемся в /home/vb
 $ cd ..
-# Выводим полный путь до текущей директории
+# Выводим адрес текущей директории
 $ pwd
+/home/vb/GLmi
 ```
 
 ```ShellSession
-# Создаем каталоги, используя флаг -p
+# Создаем каталоги (флаг "-p" позволяет создать недостающие каталоги)
 $ mkdir -p workspace/tasks/
 $ mkdir -p workspace/projects/
 $ mkdir -p workspace/reports/
@@ -44,7 +46,7 @@ $ cd workspace
 # Debian
 # Скачиваем архив с последней версией nodejs
 $ wget https://nodejs.org/dist/v6.11.5/node-v6.11.5-linux-x64.tar.xz
-# Распаковываем в текущую директорию (создается каталог с именем файла)
+# Распаковываем в текущую директорию
 $ tar -xf node-v6.11.5-linux-x64.tar.xz
 # Удаляем архив
 $ rm -rf node-v6.11.5-linux-x64.tar.xz
@@ -55,12 +57,15 @@ $ mv node-v6.11.5-linux-x64 node
 ```ShellSession
 # Выводим содержимое директории
 $ ls node/bin
-# Выводим список директорий, где терминал ищет исполняемые файлы
+node  npm
+# Выводим список директорий с установленными программами
 $ echo ${PATH}
-# Добавляем к переменной PATH путь до бинарных файлов nodejs
+/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl
+# Добавляем к переменной PATH путь до бинарных файлов созданного каталога node
 $ export PATH=${PATH}:`pwd`/node/bin
-# Снова выводим его и видим, что наша директория успешно добавлена
+# Проверим успешность изменения
 $ echo ${PATH}
+/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:pwd/node/bin
 # Создаем директорию scripts
 $ mkdir scripts
 # Создаем в этой директории файл activate
@@ -76,13 +81,14 @@ $ source scripts/activate
 $ npm install -g gistup
 # Показываем список файлов директории node/bin и убеждаемся, что все установилось корректно
 $ ls node/bin
+gistup  gistup-open  gistup-rename  node  npm
 ```
 
 ```ShellSession
 # Создаем файл .gistup.json, где будет находится наш gist token
 $ cat > ~/.gistup.json <<EOF
 {
-  "token": "${GIST_TOKEN}"
+"token": "${GIST_TOKEN}"
 }
 EOF
 ```
