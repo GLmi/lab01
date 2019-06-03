@@ -44,7 +44,7 @@ $ cd workspace
 
 ```ShellSession
 # Linux
-# Скачиваем архив с последней версией nodejs
+# Скачиваем архив с nodejs
 $ wget https://nodejs.org/dist/v6.11.5/node-v6.11.5-linux-x64.tar.xz
 # Распаковываем в текущую директорию
 $ tar -xf node-v6.11.5-linux-x64.tar.xz
@@ -163,16 +163,49 @@ $ wget https://sourceforge.net/projects/boost/files/boost/1.69.0/boost_1_69_0.ta
 2. Разархивируйте скаченный файл в директорию `~/boost_1_69_0`
 $ tar -xf boost_1_69_0.tar.gz
 3. Подсчитайте количество файлов в директории `~/boost_1_69_0` **не включая** вложенные директории.
-$ ls -f | wc -l 20
+$ ls -f | wc -l 
+20
 4. Подсчитайте количество файлов в директории `~/boost_1_69_0` **включая** вложенные директории.
+$ ls -R -f | wc -l
 5. Подсчитайте количество заголовочных файлов, файлов с расширением `.cpp`, сколько остальных файлов (не заголовочных и не `.cpp`).
+$ find ./ -type f -name "*.h" | wc -l #296
+$ find ./ -type f -name "*.cpp" | wc -l #13774
+$ find ./ -type f '!' -name '*.cpp' -a '!' -name '*.h' | wc -l #47102
 6. Найдите полный пусть до файла `any.hpp` внутри библиотеки *boost*.
+$ find . -type f -name 'any.hpp'
+#./boost/fusion/include/any.hpp
+#./boost/fusion/algorithm/query/any.hpp
+#./boost/fusion/algorithm/query/detail/any.hpp
+#./boost/spirit/home/support/algorithm/any.hpp
+#./boost/proto/detail/any.hpp ./boost/type_erasure/any.hpp
+#./boost/hana/fwd/any.hpp
+#./boost/hana/any.hpp
+#./boost/any.hpp
+#./boost/xpressive/detail/utility/any.hpp
 7. Выведите в консоль все файлы, где упоминается последовательность `boost::asio`.
+$ grep -lr "boost::asio"
+#./doc/html/process/reference.html
 8. Скомпилирутйе *boost*. Можно воспользоваться [инструкцией](https://www.boost.org/doc/libs/1_61_0/more/getting_started/unix-variants.html#or-build-custom-binaries) или [ссылкой](https://codeyarns.com/2017/01/24/how-to-build-boost-on-linux/).
+$ cd tools/build/
+$ bootstrap.sh
+$ ./b2 install
 9. Перенесите все скомпилированные на предыдущем шаге статические библиотеки в директорию `~/boost-libs`.
+$ cd ~/boost-libs
+$ mv boost_1_69_0/boost_output boost-libs
 10. Подсчитайте сколько занимает дискового пространства каждый файл в этой директории.
+$ tree -h
 11. Найдите *топ10* самых "тяжёлых".
-
+$ find . -type f -exec ls -s -k {} \; | sort -n -r | head -10
+#11548 ./libs/math/doc/math.pdf
+#3756 ./status/expected_results.xml
+#3048 ./libs/gil/io/test_images/raw/RAW_CANON_D30_SRGB.CRW
+#2760 ./libs/asio/doc/reference.qbk
+#2736 ./libs/algorithm/test/search_test_data/0001.corpus
+#2276 ./boost/typeof/vector200.hpp
+#2256 ./libs/contract/doc/html/contract.docbook
+#2200 ./libs/math/test/ellint_rg.ipp
+#2048 ./libs/intrusive/doc/autodoc.xml
+#2032 ./libs/polygon/doc/GTL_boostcon_draft03.pdf
 ```
 Copyright (c) 2015-2019 The ISC Authors
 ```
